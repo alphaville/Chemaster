@@ -142,3 +142,17 @@ CREATE TABLE `DatasetProperty` (
  CONSTRAINT `pointer_to_property` FOREIGN KEY (`property`) 
     REFERENCES `Property` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dataset-to-Compound
+--
+DROP TABLE IF EXISTS `DatasetCompound`;
+CREATE TABLE `DatasetCompound` (
+  `dataset` varchar(255) not null,
+  `compound` varchar(255) not null,    
+  primary key (`dataset`,`compound`),
+ CONSTRAINT `pointer_to_dataset2` FOREIGN KEY (`dataset`) 
+    REFERENCES `Dataset` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE,
+ CONSTRAINT `pointer_to_compound` FOREIGN KEY (`compound`) 
+    REFERENCES `Compound` (`inchikey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
