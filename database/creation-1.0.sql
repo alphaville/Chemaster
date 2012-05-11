@@ -1,5 +1,5 @@
 -- 
--- DATABASE VERSION : 2.1.0
+-- DATABASE VERSION : 1.0.0
 --
 DROP DATABASE IF EXISTS `chemaster`;
 CREATE DATABASE `chemaster` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
@@ -16,7 +16,6 @@ CREATE TABLE `Version` (
 LOCK TABLE `Version` WRITE;
 INSERT INTO `Version` (`First`,`Second`,`Third`) VALUES (1,0,0); 
 UNLOCK TABLE ;
-
 --
 -- Compound
 --
@@ -25,7 +24,6 @@ CREATE TABLE `Compound` (
  `inchikey` varchar(255),
   PRIMARY KEY (`inchikey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 --
 -- Compound Representation
 --
@@ -39,8 +37,6 @@ CREATE TABLE `Representation` (
   CONSTRAINT `compound_representation` FOREIGN KEY (`compound`) 
     REFERENCES `Compound` (`inchikey`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-
 --
 -- Condition
 --
@@ -52,7 +48,6 @@ CREATE TABLE `Condition` (
   `bin_value` boolean,
   primary key(`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 --
 -- Property
 --
@@ -68,7 +63,6 @@ CREATE TABLE `Property` (
   CONSTRAINT `property_to_condition` FOREIGN KEY (`condition`) 
     REFERENCES `Condition` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 --
 -- Bibref
 --
@@ -104,7 +98,6 @@ CREATE TABLE `Bibref` (
   KEY `index_bibtex_booktitle` (`bookTitle`) USING BTREE,
   KEY `index_bibtex_url` (`url`) USING BTREE  
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Property Value
 --
@@ -124,4 +117,28 @@ CONSTRAINT `propertyValue_to_compound` FOREIGN KEY (`compound`)
     REFERENCES `Compound` (`inchikey`) ON DELETE NO ACTION ON UPDATE CASCADE,
 CONSTRAINT `propertyValue_to_bibref` FOREIGN KEY (`bibref`)
     REFERENCES `Bibref` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+--
+-- Dataset
+--
+DROP TABLE IF EXISTS `Dataset`;
+CREATE TABLE `Dataset` (
+  `name` varchar(255),  
+  primary key(`name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dataset-to-Property
+--
+DROP TABLE IF EXISTS `DatasetProperty`;
+CREATE TABLE `DatasetProperty` (
+  `dataset` varchar(255) not null,
+  `property` varchar(255) not null,    
+  primary key (`dataset`,`property`),
+ CONSTRAINT `pointer_to_dataset` FOREIGN KEY (`dataset`) 
+    REFERENCES `Dataset` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE,
+ CONSTRAINT `pointer_to_property` FOREIGN KEY (`property`) 
+    REFERENCES `Property` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
