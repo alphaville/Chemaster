@@ -21,7 +21,9 @@ UNLOCK TABLE ;
 --
 DROP TABLE IF EXISTS `Compound`;
 CREATE TABLE `Compound` (
- `inchikey` varchar(255),
+ `inchikey` varchar(27),
+ `uploadedAs` varchar(10) comment 'How Uploaded - File formal',
+ `source` varchar(255),
   PRIMARY KEY (`inchikey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 --
@@ -31,9 +33,8 @@ DROP TABLE IF EXISTS `Representation`;
 CREATE TABLE `Representation` (
  `name` varchar(40),
  `content` LONGTEXT,
- `compound` varchar(255),
+ `compound` varchar(27) not null,
  `comment` varchar(255),
-  PRIMARY KEY (`name`),
   CONSTRAINT `compound_representation` FOREIGN KEY (`compound`) 
     REFERENCES `Compound` (`inchikey`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -51,6 +52,10 @@ CREATE TABLE `Condition` (
 --
 -- Property
 --
+-- Comment on the field tag:
+-- This serves as a classifier for the descriptor. e.g. 
+-- it can be "Constitutional Indices"::"BasicDescriptors"
+-- 
 DROP TABLE IF EXISTS `Property`;
 CREATE TABLE `Property` (
   `name` varchar(255),
@@ -59,6 +64,9 @@ CREATE TABLE `Property` (
   `condition` varchar(255),
   `description` text,
   `isExperimental` boolean,
+  `tag` varchar(255) comment 'For descriptors: Category (topological, etc)',
+  `software` varchar(255),
+  `software_version` varchar(40),
   primary key(`name`),
   CONSTRAINT `property_to_condition` FOREIGN KEY (`condition`) 
     REFERENCES `Condition` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE
@@ -104,7 +112,7 @@ CREATE TABLE `Bibref` (
 DROP TABLE IF EXISTS `PropertyValue`;
 CREATE TABLE `PropertyValue` (
   `property` varchar(255) not null,
-  `compound` varchar(255) not null,
+  `compound` varchar(27) not null,
   `str_value` varchar(255),
   `dbl_value` double,
   `bin_value` boolean,
@@ -112,11 +120,11 @@ CREATE TABLE `PropertyValue` (
   `comment` varchar(255),
   primary key (`property`,`compound`),
  CONSTRAINT `propertyValue_to_prop` FOREIGN KEY (`property`) 
-    REFERENCES `Property` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE,
+    REFERENCES `Property` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT `propertyValue_to_compound` FOREIGN KEY (`compound`) 
-    REFERENCES `Compound` (`inchikey`) ON DELETE NO ACTION ON UPDATE CASCADE,
+    REFERENCES `Compound` (`inchikey`) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT `propertyValue_to_bibref` FOREIGN KEY (`bibref`)
-    REFERENCES `Bibref` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+    REFERENCES `Bibref` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
@@ -149,10 +157,22 @@ CREATE TABLE `DatasetProperty` (
 DROP TABLE IF EXISTS `DatasetCompound`;
 CREATE TABLE `DatasetCompound` (
   `dataset` varchar(255) not null,
-  `compound` varchar(255) not null,    
+  `compound` varchar(27) not null,    
   primary key (`dataset`,`compound`),
  CONSTRAINT `pointer_to_dataset2` FOREIGN KEY (`dataset`) 
     REFERENCES `Dataset` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE,
  CONSTRAINT `pointer_to_compound` FOREIGN KEY (`compound`) 
     REFERENCES `Compound` (`inchikey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+----------------------------
+-- VIEWS -------------------
+----------------------------
+
+-- InChiKey vs IUPAC
+CREATE VIEW InChiKey_IUPAC AS 
+SELECT `compound` as `InChiKey`, 
+`str_value` as `IUPAC` FROM PropertyValue 
+INNER JOIN `Compound` ON `Compound`.`inchikey`=`PropertyValue`.`compound`
+WHERE `str_value` IS NOT NULL;
