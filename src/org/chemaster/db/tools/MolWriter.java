@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.chemaster.client.ServiceInvocationException;
 import org.chemaster.db.DbWriter;
 import org.chemaster.db.exception.DbException;
+import org.chemaster.pubchem.InchiKeyToIUPACName;
 
 /**
  *
@@ -30,8 +32,7 @@ public class MolWriter extends DbWriter {
     private final String filePath;
     private final String insertCompound = "INSERT IGNORE INTO `Compound` (`inchikey`,`uploadedAs`,`source`) VALUES (?,?,?)";
     private final String insertRepresentation = "INSERT IGNORE INTO `Representation` (`name`,`content`,`compound`) VALUES (?,?,?)";
-    private final String insertName = "INSERT IGNORE INTO `PropertyValue` (`property`,`compound`,`str_value`) VALUES ('IUPAC Name',?,?)";
-   
+    private final String insertName = "INSERT IGNORE INTO `PropertyValue` (`property`,`compound`,`str_value`,`comment`) VALUES ('IUPAC Name',?,?,?)";
     private PreparedStatement insertCompoundStatement = null;
     private PreparedStatement insertRepresentationStatement = null;
     private PreparedStatement insertIUPACStatement = null;
@@ -76,25 +77,27 @@ public class MolWriter extends DbWriter {
     @Override
     public int write() throws DbException {
 
+
         Connection connection = getConnection();
         MolImporter molImporter = null;
         ByteArrayOutputStream baos = null;
-
+        MolExporter molExporter = null;
+        FileInputStream fileInputStream = null;
+        boolean existsName = false;
         try {
             insertCompoundStatement = connection.prepareStatement(insertCompound);
             insertRepresentationStatement = connection.prepareStatement(insertRepresentation);
             insertIUPACStatement = connection.prepareStatement(insertName);
 
-            FileInputStream fileInputStream = new FileInputStream(filePath);
+            fileInputStream = new FileInputStream(filePath);
             molImporter = new MolImporter(fileInputStream);
             Molecule molecule;
 
-            MolExporter inchiKeyExporter = null;
 
             while ((molecule = molImporter.read()) != null) {
                 baos = new ByteArrayOutputStream();
-                inchiKeyExporter = new MolExporter(baos, "inchikey");
-                inchiKeyExporter.write(molecule);
+                molExporter = new MolExporter(baos, "inchikey");
+                molExporter.write(molecule);
                 String inchiKey = baos.toString().trim().split("=")[1];
                 insertCompoundStatement.setString(1, inchiKey);
                 insertCompoundStatement.setString(2, "sdf");
@@ -109,38 +112,98 @@ public class MolWriter extends DbWriter {
                 for (String r : list) {
                     writeRepresentation(molecule, inchiKey, r);
                 }
-             
-                insertIUPACStatement.setString(1, inchiKey);
-                insertIUPACStatement.setString(2, molecule.getName().trim());
-                insertIUPACStatement.addBatch();               
 
+                String iupacComment = "";
+                String molName = molecule.getName();
+                if (molName == null || (molName != null && molName.isEmpty())) {
+                    // No Name provided in the SD File
+                    // Try to get the name from PubChem...
+                    InchiKeyToIUPACName retriever = null;
+                    try {
+                        retriever = new InchiKeyToIUPACName(inchiKey);
+                        molName = retriever.getIupacName();
+                        iupacComment = "Retrieved from PubChem";
+                    } catch (ServiceInvocationException ex) {
+                        Logger.getLogger(MolWriter.class.getName()).log(Level.SEVERE, null, ex);
+                        molName = null;
+                        existsName = false;
+                    }
+                } else {
+                    iupacComment = "Name provided by end-user";
+                    existsName = true;
+                }
+                if (molName != null && !molName.trim().isEmpty()) {
+                    existsName = true;
+                    insertIUPACStatement.setString(1, inchiKey);
+                    insertIUPACStatement.setString(2, molName.trim());
+                    insertIUPACStatement.setString(3, iupacComment);
+                    insertIUPACStatement.addBatch();
+                } else {
+                    existsName = false;
+                }
             }
+            
             insertCompoundStatement.executeBatch();
             insertRepresentationStatement.executeBatch();
-            insertIUPACStatement.executeBatch();
+            if (existsName) {
+                insertIUPACStatement.executeBatch();
+            }
 
-            inchiKeyExporter.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(MolWriter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MolWriter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (final SQLException ex) {
+            throw new DbException(ex);
+        } catch (final IOException ex) {
+            throw new RuntimeException("Unexpected IO Exception", ex);
         } finally {
-            try {
-                insertCompoundStatement.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(MolWriter.class.getName()).log(Level.SEVERE, null, ex);
+            if (insertCompoundStatement != null) {
+                try {
+                    insertCompoundStatement.close();
+                } catch (final SQLException ex) {
+                    throw new DbException("SQLExcetpion while closing the INSERT statement for compound", ex);
+                }
             }
-            try {
-                molImporter.close();
-            } catch (IOException ex) {
-                Logger.getLogger(MolWriter.class.getName()).log(Level.SEVERE, null, ex);
+            if (insertRepresentationStatement != null) {
+                try {
+                    insertRepresentationStatement.close();
+                } catch (final SQLException ex) {
+                    throw new DbException("SQLExcetpion while closing the INSERT statement for Representations", ex);
+                }
             }
-            try {
-                baos.close();
-            } catch (IOException ex) {
-                Logger.getLogger(MolWriter.class.getName()).log(Level.SEVERE, null, ex);
+            if (insertIUPACStatement != null) {
+                try {
+                    insertIUPACStatement.close();
+                } catch (final SQLException ex) {
+                    throw new DbException("SQLExcetpion while closing the INSERT statement for IUPAC Name", ex);
+                }
             }
+            if (molImporter != null) {
+                try {
+                    molImporter.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException("Unexpected condition while closing MolImporter", ex);
+                }
+            }
+            if (baos != null) {
+                try {
+                    baos.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException("Unexpected IOException while closing a BAOS", ex);
+                }
+            }
+            if (molExporter != null) {
+                try {
+                    molExporter.close();
+                } catch (final IOException e) {
+                    throw new RuntimeException("Unexpected condition while closing MolExporter", e);
+                }
+            }
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (final IOException ex) {
+                    throw new RuntimeException("Unexpected condition while closing the FIS", ex);
+                }
+            }
+
         }
         return 0;
     }
