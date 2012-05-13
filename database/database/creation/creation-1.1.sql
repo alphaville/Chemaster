@@ -21,9 +21,10 @@ UNLOCK TABLE ;
 --
 DROP TABLE IF EXISTS `Compound`;
 CREATE TABLE `Compound` (
- `inchikey` varchar(27),
- `uploadedAs` varchar(10) comment 'How Uploaded - File formal',
- `source` varchar(255),
+ `inchikey` VARCHAR(27),
+ `uploadedAs` VARCHAR(10) comment 'How Uploaded - File formal',
+ `source` VARCHAR(255),
+ `fingerprint` VARCHAR(4000),
   PRIMARY KEY (`inchikey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 --
@@ -31,10 +32,10 @@ CREATE TABLE `Compound` (
 --
 DROP TABLE IF EXISTS `Representation`;
 CREATE TABLE `Representation` (
- `name` varchar(40),
+ `name` VARCHAR(40),
  `content` LONGTEXT,
- `compound` varchar(27) not null,
- `comment` varchar(255),
+ `compound` VARCHAR(27) NOT NULL,
+ `comment` VARCHAR(255),
   CONSTRAINT `compound_representation` FOREIGN KEY (`compound`) 
     REFERENCES `Compound` (`inchikey`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -43,11 +44,11 @@ CREATE TABLE `Representation` (
 --
 DROP TABLE IF EXISTS `Condition`;
 CREATE TABLE `Condition` (
-  `name` varchar(255),
-  `str_value` varchar(255),
-  `dbl_value` double,
-  `bin_value` boolean,
-  primary key(`name`)
+  `name` VARCHAR(255),
+  `str_value` VARCHAR(255),
+  `dbl_value` DOUBLE,
+  `bin_value` BOOLEAN,
+  PRIMARY KEY(`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 --
 -- Property
@@ -58,16 +59,16 @@ CREATE TABLE `Condition` (
 -- 
 DROP TABLE IF EXISTS `Property`;
 CREATE TABLE `Property` (
-  `name` varchar(255),
-  `unit` varchar(255),
-  `type` varchar(255),
-  `condition` varchar(255),
+  `name` VARCHAR(255),
+  `unit` VARCHAR(255),
+  `type` VARCHAR(255),
+  `condition` VARCHAR(255),
   `description` text,
-  `isExperimental` boolean,
-  `tag` varchar(255) comment 'For descriptors: Category (topological, etc)',
-  `software` varchar(255),
-  `software_version` varchar(40),
-  primary key(`name`),
+  `isExperimental` BOOLEAN,
+  `tag` VARCHAR(255) comment 'For descriptors: Category (topological, etc)',
+  `software` VARCHAR(255),
+  `software_version` VARCHAR(40),
+  PRIMARY KEY(`name`),
   CONSTRAINT `property_to_condition` FOREIGN KEY (`condition`) 
     REFERENCES `Condition` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -76,28 +77,28 @@ CREATE TABLE `Property` (
 --
 DROP TABLE IF EXISTS `Bibref`;
 CREATE TABLE `Bibref` (
-  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `id` VARCHAR(255) COLLATE utf8_bin NOT NULL,
   `abstract` text COLLATE utf8_bin,
-  `address` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `annotation` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `author` varchar(255) COLLATE utf8_bin NOT NULL,
-  `bibType` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `bookTitle` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `chapter` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `copyright` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `crossref` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `edition` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `editor` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `isbn` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `issn` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `journal` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `bibkey` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `keywords` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `address` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `annotation` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `author` VARCHAR(255) COLLATE utf8_bin NOT NULL,
+  `bibType` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `bookTitle` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `chapter` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `copyright` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `crossref` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `edition` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `editor` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `isbn` VARCHAR(20) COLLATE utf8_bin DEFAULT NULL,
+  `issn` VARCHAR(20) COLLATE utf8_bin DEFAULT NULL,
+  `journal` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `bibkey` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `keywords` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
   `number` int(11) unsigned DEFAULT NULL,
-  `pages` varchar(32) COLLATE utf8_bin DEFAULT NULL,
-  `series` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `pages` VARCHAR(32) COLLATE utf8_bin DEFAULT NULL,
+  `series` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `title` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `url` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
   `volume` int(11) unsigned DEFAULT NULL,
   `year` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -111,14 +112,14 @@ CREATE TABLE `Bibref` (
 --
 DROP TABLE IF EXISTS `PropertyValue`;
 CREATE TABLE `PropertyValue` (
-  `property` varchar(255) not null,
-  `compound` varchar(27) not null,
-  `str_value` varchar(255),
-  `dbl_value` double,
-  `bin_value` boolean,
-  `bibref` varchar(255),
-  `comment` varchar(255),
-  primary key (`property`,`compound`),
+  `property` VARCHAR(255) NOT NULL,
+  `compound` VARCHAR(27) NOT NULL,
+  `str_value` VARCHAR(255),
+  `dbl_value` DOUBLE,
+  `bin_value` BOOLEAN,
+  `bibref` VARCHAR(255),
+  `comment` VARCHAR(255),
+  PRIMARY KEY (`property`,`compound`),
  CONSTRAINT `propertyValue_to_prop` FOREIGN KEY (`property`) 
     REFERENCES `Property` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT `propertyValue_to_compound` FOREIGN KEY (`compound`) 
@@ -133,8 +134,8 @@ CONSTRAINT `propertyValue_to_bibref` FOREIGN KEY (`bibref`)
 --
 DROP TABLE IF EXISTS `Dataset`;
 CREATE TABLE `Dataset` (
-  `name` varchar(255),  
-  primary key(`name`) USING BTREE
+  `name` VARCHAR(255),  
+  PRIMARY KEY(`name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
@@ -142,9 +143,9 @@ CREATE TABLE `Dataset` (
 --
 DROP TABLE IF EXISTS `DatasetProperty`;
 CREATE TABLE `DatasetProperty` (
-  `dataset` varchar(255) not null,
-  `property` varchar(255) not null,    
-  primary key (`dataset`,`property`),
+  `dataset` VARCHAR(255) NOT NULL,
+  `property` VARCHAR(255) NOT NULL,    
+  PRIMARY KEY (`dataset`,`property`),
  CONSTRAINT `pointer_to_dataset` FOREIGN KEY (`dataset`) 
     REFERENCES `Dataset` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE,
  CONSTRAINT `pointer_to_property` FOREIGN KEY (`property`) 
@@ -156,9 +157,9 @@ CREATE TABLE `DatasetProperty` (
 --
 DROP TABLE IF EXISTS `DatasetCompound`;
 CREATE TABLE `DatasetCompound` (
-  `dataset` varchar(255) not null,
-  `compound` varchar(27) not null,    
-  primary key (`dataset`,`compound`),
+  `dataset` VARCHAR(255) NOT NULL,
+  `compound` VARCHAR(27) NOT NULL,    
+  PRIMARY KEY (`dataset`,`compound`),
  CONSTRAINT `pointer_to_dataset2` FOREIGN KEY (`dataset`) 
     REFERENCES `Dataset` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE,
  CONSTRAINT `pointer_to_compound` FOREIGN KEY (`compound`) 
@@ -172,7 +173,16 @@ CREATE TABLE `DatasetCompound` (
 
 -- InChiKey vs IUPAC
 CREATE VIEW InChiKey_IUPAC AS 
-SELECT `compound` as `InChiKey`, 
-`str_value` as `IUPAC` FROM PropertyValue 
+SELECT `compound` AS `InChiKey`, 
+`str_value` AS `IUPAC` FROM PropertyValue 
 INNER JOIN `Compound` ON `Compound`.`inchikey`=`PropertyValue`.`compound`
 WHERE `str_value` IS NOT NULL;
+
+----------------------------
+-- ADD SOME DATA -----------
+----------------------------
+LOCK TABLE `Property` WRITE;
+INSERT IGNORE INTO `Property` (`name`,`unit`,`type`,`description`,`isExperimental`,`tag`) 
+VALUES ('IUPAC Name','','string','IUPAC Name',false,'Identifier'),
+('CID','','integer','PubMed ID Number',false,'Identifier, PubChem'); 
+UNLOCK TABLE ;
