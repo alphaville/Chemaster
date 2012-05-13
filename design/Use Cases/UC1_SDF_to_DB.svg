@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="60cm" height="24cm" viewBox="298 72 1196 470" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <path style="fill: #f2ee33" d="M 299.4 225.2 L 410.6,225.2 L 410.6,290 C 388.36,279.2 377.24,279.2 355,290 C 332.76,300.8 321.64,300.8 299.4,290 L 299.4,225.2z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 299.4 225.2 L 410.6,225.2 L 410.6,290 C 388.36,279.2 377.24,279.2 355,290 C 332.76,300.8 321.64,300.8 299.4,290 L 299.4,225.2"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="355" y="240.2">
+      <tspan x="355" y="240.2">SD File</tspan>
+      <tspan x="355" y="256.2">provided by the </tspan>
+      <tspan x="355" y="272.2">end-user</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="456.875" y="239" width="104.3" height="38"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="456.875" y="239" width="104.3" height="38"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="509.025" y="261.9">
+      <tspan x="509.025" y="261.9">Parse SD File</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="410.6" y1="257.6" x2="447.139" y2="257.916"/>
+    <polygon style="fill: #000000" points="454.639,257.981 444.596,262.894 447.139,257.916 444.683,252.894 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="454.639,257.981 444.596,262.894 447.139,257.916 444.683,252.894 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="626.5" y="170" width="135" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="626.5" y="170" width="135" height="54"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="694" y="192.9">
+      <tspan x="694" y="192.9">Retrieve declared</tspan>
+      <tspan x="694" y="208.9">name/title</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="561.175,248.5 593.838,248.5 593.838,197 616.764,197 "/>
+    <polygon style="fill: #000000" points="624.264,197 614.264,202 616.764,197 614.264,192 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="624.264,197 614.264,202 616.764,197 614.264,192 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="628.675" y="273" width="166.65" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="628.675" y="273" width="166.65" height="54"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="712" y="295.9">
+      <tspan x="712" y="295.9">Calculate the InChiKey</tspan>
+      <tspan x="712" y="311.9">identifier</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="561.175,258 594.925,258 594.925,300 618.939,300 "/>
+    <polygon style="fill: #000000" points="626.439,300 616.439,305 618.939,300 616.439,295 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="626.439,300 616.439,305 618.939,300 616.439,295 "/>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="876,157.756 954.488,197 876,236.244 797.512,197 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="876,157.756 954.488,197 876,236.244 797.512,197 "/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="876" y="200.9">
+      <tspan x="876" y="200.9">is declared?</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="761.5" y1="197" x2="787.776" y2="197"/>
+    <polygon style="fill: #000000" points="795.276,197 785.276,202 787.776,197 785.276,192 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="795.276,197 785.276,202 787.776,197 785.276,192 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="984.775" y="77" width="182.45" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="984.775" y="77" width="182.45" height="54"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="1076" y="99.9">
+      <tspan x="1076" y="99.9">Retrieve the IUPAC name</tspan>
+      <tspan x="1076" y="115.9">from PubChem (online)</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="876,157.756 877.215,157.756 877.215,104 975.039,104 "/>
+    <polygon style="fill: #000000" points="982.539,104 972.539,109 975.039,104 972.539,99 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="982.539,104 972.539,109 975.039,104 972.539,99 "/>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="1268,73.0184 1329.96,104 1268,134.982 1206.04,104 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1268,73.0184 1329.96,104 1268,134.982 1206.04,104 "/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="1268" y="107.9">
+      <tspan x="1268" y="107.9">found?</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="1167.23" y1="104" x2="1196.3" y2="104"/>
+    <polygon style="fill: #000000" points="1203.8,104 1193.8,109 1196.3,104 1193.8,99 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1203.8,104 1193.8,109 1196.3,104 1193.8,99 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1205.25" y="173" width="123.5" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1205.25" y="173" width="123.5" height="54"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="1267" y="195.9">
+      <tspan x="1267" y="195.9">Ask the user to </tspan>
+      <tspan x="1267" y="211.9">specify a name </tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="1268" y1="134.982" x2="1267.26" y2="163.267"/>
+    <polygon style="fill: #000000" points="1267.06,170.765 1262.32,160.637 1267.26,163.267 1272.32,160.9 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1267.06,170.765 1262.32,160.637 1267.26,163.267 1272.32,160.9 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1234.97" y="259" width="154.5" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1234.97" y="259" width="154.5" height="54"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="1312.22" y="281.9">
+      <tspan x="1312.22" y="281.9">Write the data in the</tspan>
+      <tspan x="1312.22" y="297.9">database in batch</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="795.325,300 1015.22,300 1015.22,299.5 1225.23,299.5 "/>
+    <polygon style="fill: #000000" points="1232.73,299.5 1222.73,304.5 1225.23,299.5 1222.73,294.5 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1232.73,299.5 1222.73,304.5 1225.23,299.5 1222.73,294.5 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="954.488,197 973.215,197 973.215,286 1225.23,286 "/>
+    <polygon style="fill: #000000" points="1232.73,286 1222.73,291 1225.23,286 1222.73,281 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1232.73,286 1222.73,291 1225.23,286 1222.73,281 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1329.96,104 1329.96,104 1454.22,104 1454.22,286 1399.2,286 "/>
+    <polygon style="fill: #000000" points="1391.7,286 1401.7,281 1399.2,286 1401.7,291 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1391.7,286 1401.7,281 1399.2,286 1401.7,291 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1205.25,213.5 1185.25,213.5 1185.25,272.5 1225.23,272.5 "/>
+    <polygon style="fill: #000000" points="1232.73,272.5 1222.73,277.5 1225.23,272.5 1222.73,267.5 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1232.73,272.5 1222.73,277.5 1225.23,272.5 1222.73,267.5 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="1280.22" y="152">
+    <tspan x="1280.22" y="152">NO</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="1333.22" y="97">
+    <tspan x="1333.22" y="97">YES</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="954.215" y="190">
+    <tspan x="954.215" y="190">YES</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="885.215" y="127">
+    <tspan x="885.215" y="127">NO</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="631.75" y="348" width="157.3" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="631.75" y="348" width="157.3" height="54"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="710.4" y="370.9">
+      <tspan x="710.4" y="370.9">Calculate the SMILES</tspan>
+      <tspan x="710.4" y="386.9">representation</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="561.175,267.5 581.4,267.5 581.4,375 622.014,375 "/>
+    <polygon style="fill: #000000" points="629.514,375 619.514,380 622.014,375 619.514,370 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="629.514,375 619.514,380 622.014,375 619.514,370 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="459.375" y="439" width="98.05" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="459.375" y="439" width="98.05" height="54"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="508.4" y="461.9">
+      <tspan x="508.4" y="461.9">Calculate</tspan>
+      <tspan x="508.4" y="477.9">Fingerprints</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="509.025" y1="277" x2="508.438" y2="429.264"/>
+    <polygon style="fill: #000000" points="508.409,436.764 503.447,426.745 508.438,429.264 513.447,426.783 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="508.409,436.764 503.447,426.745 508.438,429.264 513.447,426.783 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="789.05,375 1273.59,375 1273.59,322.736 "/>
+    <polygon style="fill: #000000" points="1273.59,315.236 1278.59,325.236 1273.59,322.736 1268.59,325.236 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1273.59,315.236 1278.59,325.236 1273.59,322.736 1268.59,325.236 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="557.425,466 1312.22,466 1312.22,322.736 "/>
+    <polygon style="fill: #000000" points="1312.22,315.236 1317.22,325.236 1312.22,322.736 1307.22,325.236 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1312.22,315.236 1317.22,325.236 1312.22,322.736 1307.22,325.236 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="568.4" y="456">
+    <tspan x="568.4" y="456">submit calculated fingerprints</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="794.4" y="367">
+    <tspan x="794.4" y="367">submit calculate SMILES representation</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="799.4" y="293">
+    <tspan x="799.4" y="293">submit the InChiKey</tspan>
+  </text>
+  <g>
+    <path style="fill: #d4ade2" d="M 1371.85 463.5 C 1395.96,451.875 1408.01,448 1432.12,448 C 1456.24,448 1468.29,451.875 1492.4,463.5 L 1492.4,525.5 C 1468.29,537.125 1456.24,541 1432.12,541 C 1408.01,541 1395.96,537.125 1371.85,525.5 L 1371.85,463.5z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 1371.85 463.5 C 1395.96,451.875 1408.01,448 1432.12,448 C 1456.24,448 1468.29,451.875 1492.4,463.5 L 1492.4,525.5 C 1468.29,537.125 1456.24,541 1432.12,541 C 1408.01,541 1395.96,537.125 1371.85,525.5 L 1371.85,463.5"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 1371.85 463.5 C 1395.96,475.125 1408.01,479 1432.12,479 C 1456.24,479 1468.29,475.125 1492.4,463.5"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="1432.12" y="506.25">
+      <tspan x="1432.12" y="506.25">Database</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="1347.4" y1="315" x2="1398.37" y2="442.352"/>
+    <polygon style="fill: #000000" points="1401.16,449.315 1392.8,441.888 1398.37,442.352 1402.08,438.173 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1401.16,449.315 1392.8,441.888 1398.37,442.352 1402.08,438.173 "/>
+  </g>
+</svg>
