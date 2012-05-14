@@ -312,12 +312,11 @@ VALUES ('aNeg','','integer','Descriptor that calculates the number of not-Hs sub
 ('ipAtomicLearning','','double','',false,'CDK::Atom::IPAtomicLearning'),
 ('indAtomHardnesss','','double','This class calculates the atomic hardness of a given atom.',false,'CDK::Atom::InductiveAtomicHardness'),
 ('indAtomSoftness','','double','This class calculates the atomic softness of a given atom.',false,'CDK::Atom::InductiveAtomicSoftness'),
-('protonInArmaticSystem','','double','This Class contains a method that returns 1 if the protons is directly bonded to an aromatic system, it returns 2 if the distance between aromatic system and proton is 2 bonds, and 0 for other positions.',false,'CDK::Atom::IsProtonInAromaticSystem');
+('protonInArmaticSystem','','double','This Class contains a method that returns 1 if the protons is directly bonded to an aromatic system, it returns 2 if the distance between aromatic system and proton is 2 bonds, and 0 for other positions.',false,'CDK::Atom::IsProtonInAromaticSystem'),
+('protonInConjSystem','','double','This Class contains a method that returns true if the protons is directly bonded to a pi system.',false,'CDK::Atom::IsProtonInConjugatedPiSystem'),
+('pepe','','double','Descriptor that calculates pi partial charges in pi-bonded systems of an heavy atom.',false,'CDK::Atom::PartialPiCharge');
 
-  	 	
  	 	
---IsProtonInConjugatedPiSystem 	This Class contains a method that returns true if the protons is directly bonded to a pi system. 	protonInConjSystem
---PartialPiCharge 	Descriptor that calculates pi partial charges in pi-bonded systems of an heavy atom. 	pepe
 --PartialSigmaCharge 	Descriptor that calculates sigma partial charges in sigma-bonded systems (PEOE) of an heavy atom. 	partialSigmaCharge
 --PartialTChargeMMFF94 	Descriptor that calculates total partial charges of an heavy atom. 	partialTCMMFF94
 --PartialTChargePEOE 	null 	pepeT
