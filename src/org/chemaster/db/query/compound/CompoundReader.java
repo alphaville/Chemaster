@@ -15,15 +15,13 @@ import org.chemaster.db.DbReader;
 import org.chemaster.db.IDbIterator;
 import org.chemaster.db.exception.DbException;
 import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.similarity.DistanceMoment;
-import org.openscience.cdk.similarity.Tanimoto;
 
 /**
  *
- * @author chung
+ * @author Pantelis Sopasakis
  */
 public class CompoundReader extends DbReader<ICompound> {
-
+//TODO check again - create tests - refactor - add functionality
     private String representation = "sdf";
     private Statement statement = null;
     private boolean doFetchRepresentation = true;
@@ -74,21 +72,31 @@ public class CompoundReader extends DbReader<ICompound> {
         CompoundReader cr2 = new CompoundReader();
 
         IDbIterator<ICompound> iter = cr.list();
-
+        int n = 0;
         while (iter.hasNext()) {
-            ICompound c = iter.next();;
+            ++n;
+            ICompound c = iter.next();
             IDbIterator<ICompound> iter2 = cr2.list();
             while (iter2.hasNext()) {
                 ICompound c2 = iter2.next();
+                ICoupleCompounds couple = new CoupleCompounds(c, c2);
                 if (!c.equals(c2)) {
-                    ICoupleCompounds couple = new CoupleCompounds(c, c2);
+                    try {
+                        System.out.println(couple.getSimilarity() > 0.8);
+                    } catch (CDKException ex) {
+                        throw new RuntimeException("Unequal bitsets???", ex);
+                    }
+                } else {
                     try {
                         System.out.println(couple.getSimilarity());
                     } catch (CDKException ex) {
+                        Logger.getLogger(CompoundReader.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
             iter2.close();
         }
+        iter.close();
+        System.out.println("ALL=" + n);
     }
 }

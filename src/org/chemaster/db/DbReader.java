@@ -30,10 +30,9 @@
  * tel. +30 210 7723236
  *
  */
-
-
 package org.chemaster.db;
 
+import java.util.List;
 import org.chemaster.db.exception.DbException;
 
 /**
@@ -72,6 +71,16 @@ public abstract class DbReader<T> extends DbOperation {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    protected void setTableColumns(List<String> columns) {
+        int length = columns.size();
+        tableColumns = new String[length];
+        int index = 0;
+        for (String col : columns) {
+            tableColumns[index] = col;
+            index++;
+        }
     }
 
     protected void setTableColumns(String... columns) {
@@ -148,6 +157,4 @@ public abstract class DbReader<T> extends DbOperation {
     }
 
     public abstract IDbIterator<T> list() throws DbException;
-
-    
 }

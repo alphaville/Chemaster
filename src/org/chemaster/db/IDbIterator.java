@@ -1,7 +1,5 @@
 package org.chemaster.db;
 
-import java.io.Closeable;
-import java.util.Iterator;
 import org.chemaster.db.exception.DbException;
 
 /**

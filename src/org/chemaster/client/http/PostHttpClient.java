@@ -36,7 +36,6 @@ public class PostHttpClient extends AbstractHttpClient implements IPostClient {
     /** Type of the posted content*/
     private String contentType = null;
     /** Parameters to be posted as application/x-www-form-urlencoded (if any) */
-    //TODO: Convert into a Map<String, List<String>> postParameters;
     private Map<String, List<String>> postParameters = new LinkedHashMap<String, List<String>>();
     private OntModel model;
     /** Arbitrary object to be posted to the remote server s*/
