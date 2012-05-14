@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.chemaster.db.DbWriter;
 import org.chemaster.db.exception.DbException;
+import org.chemaster.db.pool.DataSourceFactory;
 
 /*
  * Reads the file dList.txt and registers all dragon descriptors in 
@@ -36,6 +37,7 @@ public class PopulateDragonProperties extends DbWriter {
         Connection connection = getConnection();
         {
             try {
+                connection.setAutoCommit(false);
                 insertPropertyStatement = connection.prepareStatement(insertProperty);
                 File f = new File(dListPath);
                 FileReader fr = new FileReader(f);
@@ -56,6 +58,7 @@ public class PopulateDragonProperties extends DbWriter {
                     }
                 }
                 insertPropertyStatement.executeBatch();
+                connection.commit();
             } catch (IOException ex) {
                 Logger.getLogger(PopulateDragonProperties.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -67,7 +70,9 @@ public class PopulateDragonProperties extends DbWriter {
     }
 
     public static void main(String... args) throws DbException {
-        PopulateDragonProperties p = new PopulateDragonProperties("/home/chung/Desktop/dList.txt");
+        PopulateDragonProperties p = new PopulateDragonProperties("dList.txt");
         p.write();
+        p.close();
+        DataSourceFactory.getInstance().close();
     }
 }
