@@ -1,20 +1,17 @@
 package org.chemaster.db.tools;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,8 +20,6 @@ import org.chemaster.db.DbWriter;
 import org.chemaster.db.exception.DbException;
 import org.chemaster.db.pool.DataSourceFactory;
 import org.chemaster.pubchem.InchiKeyToIUPACName;
-import org.openscience.cdk.ChemFile;
-import org.openscience.cdk.ChemObject;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.fingerprint.Fingerprinter;
@@ -32,12 +27,10 @@ import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
-import org.openscience.cdk.io.MDLReader;
 import org.openscience.cdk.io.SDFWriter;
-import org.openscience.cdk.io.formats.IResourceFormat;
-import org.openscience.cdk.io.formats.SDFFormat;
+import org.openscience.cdk.io.XYZWriter;
 import org.openscience.cdk.io.iterator.IteratingMDLReader;
-import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
+import org.openscience.cdk.smiles.SmilesGenerator;
 
 /**
  *
@@ -51,7 +44,6 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
 public class MolWriter extends DbWriter {
 
     //TODO Use Log4J
-    private final String filePath;
     private File file;
     private URI fileUri;
     private final String insertCompound = "INSERT IGNORE INTO `Compound` (`inchikey`,`uploadedAs`,`source`,`fingerprint`) VALUES (?,?,?,?)";
@@ -70,11 +62,20 @@ public class MolWriter extends DbWriter {
             add("sdf");
             add("smiles");
             add("inchi");
+            add("xyz");
         }
     };
 
+    /**
+     * Create a new instance of <code>MolWriter</code> which will be used
+     * to write an SD file or other file with molecules into the database.
+     * 
+     * @param path
+     *      Path to the SD File.
+     * @throws FileNotFoundException 
+     *      If the file was not found under the specified path.
+     */
     public MolWriter(String path) throws FileNotFoundException {
-        this.filePath = path;
         file = new File(path);
         if (!file.exists()) {
             throw new FileNotFoundException("The file: '" + file.getName() + "' was not "
@@ -83,12 +84,18 @@ public class MolWriter extends DbWriter {
         fileUri = file.toURI();
     }
 
+    /**
+     * List of representations that you need to be registered in the
+     * database. Admissible values are sdf, smiles, inchi and xyz.
+     * @return 
+     *      List of representations.
+     */
     public List<String> getRepresentations() {
         return representationsList;
     }
 
     public boolean addRepresentation(String rep) {
-        return representationsList.add(rep);
+        return representationsList.add(rep.toLowerCase());
     }
 
     @Override
@@ -112,6 +119,7 @@ public class MolWriter extends DbWriter {
 
             String currentMolName = null;
             String currentInchiKey = null;
+            String currentInchi = null;
             BitSet fPrint = null;
 
             /*
@@ -130,6 +138,7 @@ public class MolWriter extends DbWriter {
                 InChIGenerator gen = InChIGeneratorFactory.getInstance().
                         getInChIGenerator(currentMol);
                 currentInchiKey = gen.getInchiKey();
+                currentInchi = gen.getInchi();
 
                 /*
                  * Get the name (IUPAC)
@@ -190,12 +199,44 @@ public class MolWriter extends DbWriter {
                     insertRepresentationStatement.addBatch();
                     insertRepresentationStatement.clearParameters();
                 }
+                if (this.representationsList.contains("smiles")) {
+                    SmilesGenerator smi = new SmilesGenerator();
+                    String smiles = smi.createSMILES(currentMol);
+                    insertRepresentationStatement.setString(1, "smiles");
+                    insertRepresentationStatement.setString(2, smiles);
+                    insertRepresentationStatement.setString(3, currentInchiKey);
+                    insertRepresentationStatement.addBatch();
+                    insertRepresentationStatement.clearParameters();
+                }
+                if (this.representationsList.contains("xyz")) {
+                    ByteArrayOutputStream baos_xyz = new ByteArrayOutputStream();
+                    XYZWriter xyz = new XYZWriter(baos_xyz);
+                    xyz.write(currentMol);
+                    xyz.close();
+                    baos_sdf.close();
+                    insertRepresentationStatement.setString(1, "xyz");
+                    insertRepresentationStatement.setString(2, baos_xyz.toString());
+                    insertRepresentationStatement.setString(3, currentInchiKey);
+                    insertRepresentationStatement.addBatch();
+                    insertRepresentationStatement.clearParameters();
+                }
+                if (this.representationsList.contains("inchi")) {
+                    insertRepresentationStatement.setString(1, "inchi");
+                    insertRepresentationStatement.setString(2, currentInchi);
+                    insertRepresentationStatement.setString(3, currentInchiKey);
+                    insertRepresentationStatement.addBatch();
+                    insertRepresentationStatement.clearParameters();
+                }
             }
             insertCompoundStatement.executeBatch();
             insertIUPACStatement.executeBatch();
-            insertRepresentationStatement.executeBatch();
+            int[] results = insertRepresentationStatement.executeBatch();
             connection.commit();
-
+            int overall_yield = 0;
+            for (int n : results) {
+                overall_yield += n;
+            }
+            return overall_yield;
         } catch (CDKException ex) {
             Logger.getLogger(MolWriter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (final SQLException ex) {
@@ -244,7 +285,11 @@ public class MolWriter extends DbWriter {
     }
 
     public static void main(String... e) throws Exception {
-        String path = "mols.sdf";
+//        while(true){
+//            Thread.sleep(100);
+//            System.out.println("("+MouseInfo.getPointerInfo().getLocation().x+", "+MouseInfo.getPointerInfo().getLocation().y+")");
+//        }
+        String path = "tst.sdf";
         MolWriter my_writer = new MolWriter(path);
         my_writer.write();
         my_writer.close();
