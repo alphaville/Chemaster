@@ -66,8 +66,6 @@ CREATE TABLE `Property` (
   `description` text,
   `isExperimental` BOOLEAN,
   `tag` VARCHAR(255) comment 'For descriptors: Category (topological, etc)',
-  `software` VARCHAR(255),
-  `software_version` VARCHAR(40),
   PRIMARY KEY(`name`),
   CONSTRAINT `property_to_condition` FOREIGN KEY (`condition`) 
     REFERENCES `Condition` (`name`) ON DELETE NO ACTION ON UPDATE CASCADE
@@ -119,6 +117,8 @@ CREATE TABLE `PropertyValue` (
   `bin_value` BOOLEAN,
   `bibref` VARCHAR(255),
   `comment` VARCHAR(255),
+  `software` VARCHAR(255),
+  `software_version` VARCHAR(40),
   PRIMARY KEY (`property`,`compound`),
  CONSTRAINT `propertyValue_to_prop` FOREIGN KEY (`property`) 
     REFERENCES `Property` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
