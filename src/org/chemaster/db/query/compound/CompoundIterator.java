@@ -31,12 +31,8 @@ public class CompoundIterator extends DbIterator<ICompound> {
             nextCompound = new Compound();
             String compoundInchi = rs.getString("inchikey");
             nextCompound.setInchiKey(compoundInchi);
-            String fPrint = rs.getString("fingerprint");
-            BitSetParser bsp = new BitSetParser(fPrint);
-            BitSet bs = bsp.parse();
             String content = rs.getString("content");
             nextCompound.getRepresentations().put(representation, content);
-            nextCompound.setFingerprint(bs);
         } catch (SQLException ex) {
             Logger.getLogger(CompoundIterator.class.getName()).log(Level.SEVERE, null, ex);
         }

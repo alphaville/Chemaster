@@ -45,7 +45,6 @@ public class CompoundReader extends DbReader<ICompound> {
         setTable("Compound");
         List<String> columns = new ArrayList<String>();
         columns.add("Compound.inchikey");
-        columns.add("Compound.fingerprint");
         if (doFetchRepresentation) {
             columns.add("Representation.content");
         }
@@ -98,5 +97,6 @@ public class CompoundReader extends DbReader<ICompound> {
         }
         iter.close();
         System.out.println("ALL=" + n);
+        
     }
 }

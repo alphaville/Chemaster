@@ -5,10 +5,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.chemaster.core.ICompound;
 import org.chemaster.core.ICoupleCompounds;
 import org.openscience.cdk.exception.CDKException;
@@ -22,6 +21,9 @@ public class CoupleCompounds implements ICoupleCompounds {
 
     ICompound compound1;
     ICompound compound2;
+    Double similarity = null;
+    Double ext_similarity = null;
+    Double estate_similarity = null;
 
     public CoupleCompounds(ICompound compound1, ICompound compound2) {
         this.compound1 = compound1;
@@ -40,7 +42,27 @@ public class CoupleCompounds implements ICoupleCompounds {
 
     @Override
     public double getSimilarity() throws CDKException {
-        return Tanimoto.calculate(compound1.getFingerprint(), compound2.getFingerprint());
+        if (similarity == null) {
+            similarity = new Double(Tanimoto.calculate(compound1.getFingerprint(), compound2.getFingerprint()));
+        }
+        return similarity;
+    }
+
+    @Override
+    public double getExtendedSimilarity() throws CDKException {
+        if (ext_similarity == null) {
+            ext_similarity = new Double(Tanimoto.calculate(compound1.getExtFingerprint(), compound2.getExtFingerprint()));
+        }
+        return ext_similarity;
+    }
+
+    @Override
+    public double getESTATESimilarity() throws CDKException {
+        if (estate_similarity == null) {
+            estate_similarity = new Double(Tanimoto.calculate(
+                    compound1.getESTATEFingerprint(), compound2.getESTATEFingerprint()));
+        }
+        return estate_similarity;
     }
 
     @Override
@@ -93,5 +115,10 @@ public class CoupleCompounds implements ICoupleCompounds {
             throw new RuntimeException(ex);
         }
         return digestAsString;
+    }
+
+    @Override
+    public ICompound[] getCompounds() {
+        return new ICompound[]{compound1, compound2};
     }
 }

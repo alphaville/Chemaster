@@ -13,6 +13,10 @@ import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.ChemFile;
 import org.openscience.cdk.ChemObject;
 import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.fingerprint.EStateFingerprinter;
+import org.openscience.cdk.fingerprint.ExtendedFingerprinter;
+import org.openscience.cdk.fingerprint.Fingerprinter;
+import org.openscience.cdk.fingerprint.IFingerprinter;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.io.MDLReader;
 import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
@@ -25,7 +29,9 @@ public class Compound implements ICompound {
 
     private Map<String, String> REPRESENTATION_MAP = new HashMap<String, String>();
     private String inchiKey = null;
-    private BitSet bs;
+    private BitSet fingerprint;
+    private BitSet ext_fingerprint;
+    private BitSet estate_fingerprint;
 
     public Compound() {
     }
@@ -57,13 +63,21 @@ public class Compound implements ICompound {
 
     @Override
     public ICompound setFingerprint(BitSet bs) {
-        this.bs = bs;
+        this.fingerprint = bs;
         return this;
     }
 
     @Override
     public BitSet getFingerprint() {
-        return this.bs;
+        if (this.fingerprint == null) {
+            IFingerprinter fp = new Fingerprinter();
+            try {
+                this.fingerprint = fp.getFingerprint(asContainer());
+            } catch (final CDKException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return this.fingerprint;
     }
 
     @Override
@@ -104,5 +118,31 @@ public class Compound implements ICompound {
         int hash = 7;
         hash = 67 * hash + (this.inchiKey != null ? this.inchiKey.hashCode() : 0);
         return hash;
+    }
+
+    @Override
+    public BitSet getExtFingerprint() {
+        if (this.ext_fingerprint == null) {
+            IFingerprinter fp = new ExtendedFingerprinter();
+            try {
+                this.ext_fingerprint = fp.getFingerprint(asContainer());
+            } catch (final CDKException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return this.ext_fingerprint;
+    }
+
+    @Override
+    public BitSet getESTATEFingerprint() {
+        if (this.estate_fingerprint == null) {
+            IFingerprinter fp = new EStateFingerprinter();
+            try {
+                this.estate_fingerprint = fp.getFingerprint(asContainer());
+            } catch (final CDKException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return this.estate_fingerprint;
     }
 }
