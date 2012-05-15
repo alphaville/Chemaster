@@ -54,11 +54,10 @@ public class PubChemFetcher {
     }
 
     public static void main(String... arts) throws Exception {
-        int offset = 1;
+        int offset = 1200;
         int batch = 5;
-        int howMany= 1000;
-        int ceiling = offset + howMany;
-        for (int i = 0; i < ceiling; i = i + batch) {
+        int howMany= 20;
+        for (int i = 0; i < howMany; i = i + batch) {
             int from = i;
             int to = i + batch - 1;
             from += offset;

@@ -14,7 +14,8 @@ import org.openscience.cdk.exception.CDKException;
 
 /**
  *
- * Updates the finderprints for all molecules in the database
+ * For a given molecule, searches for all similar ones 
+ * and updates the similarity values in the database
  */
 public class SimilarityUpdater extends AbstractDbOperation {
 
@@ -94,17 +95,36 @@ public class SimilarityUpdater extends AbstractDbOperation {
         }
     }
 
+    @Override
+    public void close() throws DbException {
+        if (insertSimilarityStatement != null) {
+            try {
+                insertSimilarityStatement.close();
+            } catch (final SQLException ex) {
+                throw new DbException(ex);
+            }
+        }
+        super.close();
+    }
+
     public static void main(String... args) throws Exception {
         CompoundReader cr = new CompoundReader();
         CompoundReader cr2 = new CompoundReader();
-        SimilarityUpdater sim = new SimilarityUpdater();
+        SimilarityUpdater sim = null;
+
+
+        int batchSize = 10;
+        //TODO: 
 
         IDbIterator<ICompound> iter = cr.list();
         int n = 0;
-        while (iter.hasNext()) {            
+        while (iter.hasNext()) {
+            sim = new SimilarityUpdater();
             ICompound c = iter.next();
             IDbIterator<ICompound> iter2 = cr2.list();
+            batchSize = 0;
             while (iter2.hasNext()) {
+                batchSize++;
                 ICompound c2 = iter2.next();
                 ICoupleCompounds couple = new CoupleCompounds(c, c2);
                 if (!c.equals(c2)) {
@@ -121,11 +141,12 @@ public class SimilarityUpdater extends AbstractDbOperation {
                 }
             }
             iter2.close();
+            sim.submit();
+            sim.close();
+            System.out.println("Next round now...");
         }
-        sim.submit();
         iter.close();
-        sim.close();
-        System.out.println("Similarity Values added :" + (n/2));
+        System.out.println("Similarity Values added :" + (n / 2));
     }
     /*
      * Example on how to find similar compounds:
